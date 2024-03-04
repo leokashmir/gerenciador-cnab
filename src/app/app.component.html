@@ -174,7 +174,7 @@
   <div class="content">
     <div class="left-side">
       <svg
-        xmlns="http://www.w3.org/2000/svg"
+
         viewBox="0 0 982 239"
         fill="none"
         class="angular-logo"
@@ -223,11 +223,16 @@
     <div class="divider" role="separator" aria-label="Divider"></div>
     <div class="right-side">
       <div class="pill-group">
-        @for (item of [
+        <!-- @for (item of [
           { title: 'Upload de Arquivos', link: '' },
           { title: 'Cosultar Transações', link: '' },
 
-        ]; track item.title) {
+        ]; track item.title)  -->
+        <ul>
+          <li *ngFor="let item of items">
+            <button (click)="redirectToRoute(item.link)">{{ item.title }}</button>
+          </li>
+        <li *ngFor="let item of items">
           <a
             class="pill"
             [href]="item.link"
@@ -236,7 +241,7 @@
           >
             <span>{{ item.title }}</span>
             <svg
-              xmlns="http://www.w3.org/2000/svg"
+
               height="14"
               viewBox="0 -960 960 960"
               width="14"
@@ -247,7 +252,13 @@
               />
             </svg>
           </a>
-        }
+        </li>
+
+        </ul>
+
+
+
+
       </div>
       <div class="social-links">
         <a
@@ -261,7 +272,7 @@
             height="24"
             viewBox="0 0 25 24"
             fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+
             alt="Github"
           >
             <path
@@ -277,4 +288,3 @@
 </main>
 
 
-<router-outlet />
