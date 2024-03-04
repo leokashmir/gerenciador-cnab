@@ -11,7 +11,7 @@ import {PesquisaFiltro} from "../models/pesquisaFiltro";
 export class PesquisaService {
 
   private httpClient : HttpClient;
-  private urlBase = Environment.URK_BASE;
+  private urlBase = Environment.URL_BASE;
 
   constructor(httpClient: HttpClient) {
         this.httpClient = httpClient
