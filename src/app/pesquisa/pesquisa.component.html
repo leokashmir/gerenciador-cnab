@@ -1,1 +1,46 @@
-<p>pesquisa works!</p>
+
+
+<div>
+
+  <label for="companyName">Empresa:</label> <input type="text" id="companyName" name="companyName" ><br>
+  <label for="companyId">CNPJ:</label><input type="text" id="companyId" name="companyId" ><br>
+  <label for="accountOrigin">Conta de Origem:</label><input type="text" id="accountOrigin" name="accountOrigin" ><br>
+  <label for="accountDestination">Conta de Destino:</label><input type="text" id="accountDestination" name="accountDestination" ><br>
+  <label >Tipo de Transação:</label>
+  <select name="tipo" id="tipo">
+    <option value="C">Credito</option>
+    <option value="D">Debito</option>
+    <option value="E">Estorno</option>
+  </select>
+
+
+</div>
+
+
+<div>
+
+    <table>
+      <thead>
+        <th>Empresa</th>
+        <th>Cnpj</th>
+        <th>Conta de Origem</th>
+        <th>Conta de Destino</th>
+        <th>Tipo de Transação</th>
+        <th>Valor</th>
+      </thead>
+      <tbody>
+      <tr>
+        @for ( transacao of  transacoes ; track transacoes ){
+          <td>{{transacao?.company.companyName}}</td>
+          <td>{{transacao?.company.companyId}}</td>
+          <td>{{transacao?.accountOrigin}}</td>
+          <td>{{transacao?.accountDestination}}</td>
+          <td>{{transacao?.type}}</td>
+          <td>{{transacao?.value | currency }}</td>
+          }
+
+      </tr>
+      </tbody>
+    </table>
+
+</div>

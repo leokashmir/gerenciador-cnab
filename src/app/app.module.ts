@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UploadfileComponent } from './uploadfile/uploadfile.component';
 import { PesquisaComponent } from './pesquisa/pesquisa.component';
+import {HttpClientModule, provideHttpClient, withFetch} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -14,10 +15,15 @@ import { PesquisaComponent } from './pesquisa/pesquisa.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [
-    provideClientHydration()
+    provideClientHydration(),
+    provideHttpClient(withFetch()),
+
+
+
   ],
   bootstrap: [AppComponent]
 })
