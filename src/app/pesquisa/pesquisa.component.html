@@ -32,8 +32,8 @@
       <tbody>
       <tr>
         @for ( transacao of  transacoes ; track transacoes ){
-          <td>{{transacao?.company.companyName}}</td>
-          <td>{{transacao?.company.companyId}}</td>
+          <td>{{transacao?.company?.companyName}}</td>
+          <td>{{transacao?.company?.companyId}}</td>
           <td>{{transacao?.accountOrigin}}</td>
           <td>{{transacao?.accountDestination}}</td>
           <td>{{transacao?.type}}</td>
