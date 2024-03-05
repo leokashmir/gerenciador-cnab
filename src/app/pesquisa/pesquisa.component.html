@@ -1,47 +1,111 @@
+<form class="form"  [formGroup]="formControlPesquisa" (ngSubmit)="pesquisarTransacaoes()" >
 
+ <div class="left-side">
+  <h1>Consultar Transações</h1>
+</div><hr><br>
 
-<div>
+  <mat-grid-list cols="3" rowHeight="70px">
 
-  <label for="companyName">Empresa:</label> <input type="text" id="companyName" name="companyName" ><br>
-  <label for="companyId">CNPJ:</label><input type="text" id="companyId" name="companyId" ><br>
-  <label for="accountOrigin">Conta de Origem:</label><input type="text" id="accountOrigin" name="accountOrigin" ><br>
-  <label for="accountDestination">Conta de Destino:</label><input type="text" id="accountDestination" name="accountDestination" ><br>
-  <label >Tipo de Transação:</label>
+    <mat-grid-tile>
+      <mat-form-field class="full-width"  >
+        <mat-label>Empresa</mat-label>
+        <input matInput placeholder="Empresa A" value="Sushi" formControlName ="companyName"   >
+      </mat-form-field>
+    </mat-grid-tile>
 
-  <select name="tipo" id="tipo">
-    <option value="C">Credito</option>
-    <option value="D">Debito</option>
-    <option value="E">Estorno</option>
-  </select>
+    <mat-grid-tile>
+      <mat-form-field class="full-width">
+        <mat-label>Cnpj</mat-label>
+        <input matInput placeholder="98215352000100" value="Sushi"formControlName="companyId">
+      </mat-form-field>
+    </mat-grid-tile>
 
+    <mat-grid-tile>
+      <mat-form-field class="full-width">
+        <mat-label>Conta Origem</mat-label>
+        <input matInput placeholder="321518" value="Sushi"  formControlName="accountOrigin">
+      </mat-form-field>
+   </mat-grid-tile>
 
-</div>
+    <mat-grid-tile>
+      <mat-form-field class="full-width">
+        <mat-label>Conta Destino</mat-label>
+        <input matInput placeholder="321567" value="Sushi" formControlName="accountDestination">
+      </mat-form-field>
+   </mat-grid-tile>
 
-
-<div>
-
-    <table>
-      <thead>
-        <th>Empresa</th>
-        <th>Cnpj</th>
-        <th>Conta de Origem</th>
-        <th>Conta de Destino</th>
-        <th>Tipo de Transação</th>
-        <th>Valor</th>
-      </thead>
-      <tbody>
-      <tr>
-        @for ( transacao of  transacoes ; track transacoes ){
-          <td>{{transacao?.company?.companyName}}</td>
-          <td>{{transacao?.company?.companyId}}</td>
-          <td>{{transacao?.accountOrigin}}</td>
-          <td>{{transacao?.accountDestination}}</td>
-          <td>{{transacao?.type}}</td>
-          <td>{{transacao?.value | currency }}</td>
+    <mat-grid-tile>
+      <mat-form-field class="full-width" >
+        <mat-label>Operção</mat-label>
+        <mat-select formControlName="type" name="food">
+          @for (type of types; track types) {
+            <mat-option [value]="type.value">{{type.viewValue}}</mat-option>
           }
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
 
-      </tr>
-      </tbody>
-    </table>
+    <mat-grid-tile>
+    </mat-grid-tile>
+
+    </mat-grid-list>
+
+  <div class="content-center-div">
+    <button mat-fab extended color="primary" type="submit" [disabled]="formControlPesquisa.invalid" >
+      Pesquisar
+    </button>
+    <button mat-fab extended color="primary" type="button"  (click)="limpar()" >
+      Limpar
+    </button>
+  </div>
+
+</form>
+<br><br>
+
+
+@if (exibirTabela){
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="Empresa">
+      <th mat-header-cell *matHeaderCellDef> Empresa </th>
+      <td mat-cell *matCellDef="let element"> {{element?.company?.companyName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Cnpj">
+      <th mat-header-cell *matHeaderCellDef> Cnpj </th>
+      <td mat-cell *matCellDef="let element"> {{element?.company?.companyId }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Conta de Origem">
+      <th mat-header-cell *matHeaderCellDef> Conta de Origem </th>
+      <td mat-cell *matCellDef="let element"> {{element?.accountOrigin}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Conta de Destino">
+      <th mat-header-cell *matHeaderCellDef> Conta de Destino </th>
+      <td mat-cell *matCellDef="let element"> {{element?.accountDestination }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Tipo de Transação">
+      <th mat-header-cell *matHeaderCellDef> Tipo de Transação </th>
+      <td mat-cell *matCellDef="let element"> {{element?.type}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Valor">
+      <th mat-header-cell *matHeaderCellDef> Valor </th>
+      <td mat-cell *matCellDef="let element"> {{element?.value  | currency:'BRL'}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+  </mat-paginator>
 
 </div>
+}
+

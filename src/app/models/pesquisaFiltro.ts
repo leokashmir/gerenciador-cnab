@@ -19,11 +19,11 @@ export class PesquisaFiltro{
 
 export class PesquisaFiltroBuilder {
 
-  companyName = "";
-  companyId= "";
-  accountOrigin= "";
-  accountDestination= "";
-  type= "";
+  companyName! :string;
+  companyId!:string;
+  accountOrigin!:string;
+  accountDestination!:string;
+  type!:string;
 
   setName(companyName: string): PesquisaFiltroBuilder {
     this.companyName = companyName;
