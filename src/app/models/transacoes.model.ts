@@ -1,6 +1,6 @@
-export interface Transacoesdto{
+export interface TransacoesModel {
   id?:number;
-  company: Company;
+  company?: Company;
   accountOrigin: string;
   accountDestination: string;
   type: string;

@@ -5,9 +5,9 @@ export interface ResponseUpload {
 }
 
 export interface Data{
-  transactions: Transactions[]
+  transactionDtos: TransactionsDtos[]
 }
-export interface Transactions{
+export interface TransactionsDtos{
   "type":string,
   "value": number,
   "accountOrigin": string,

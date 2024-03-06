@@ -1,12 +1,14 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {PesquisaService} from "../services/pesquisa.service";
-import {Transacoesdto} from "../models/transacoesdto";
-import {PesquisaFiltroBuilder} from "../models/pesquisaFiltro";
+import {TransacoesModel} from "../models/transacoes.model";
+import {PesquisaFiltroBuilder} from "../models/pesquisaFiltroModel";
 import {Observable} from "rxjs";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {type} from "node:os";
+import {TipoEnum} from "../enums/TiposEnum";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-pesquisa',
@@ -15,7 +17,7 @@ import {type} from "node:os";
 })
 export class PesquisaComponent implements OnInit{
 
-  transacoes$ = new Observable<Transacoesdto[]>();
+  transacoes$ = new Observable<TransacoesModel[]>();
   companyName!: string;
   companyId!:string;
   accountOrigin!:string;
@@ -26,18 +28,19 @@ export class PesquisaComponent implements OnInit{
   types =[
     {value: 'C', viewValue: 'CREDITO'},
     {value: 'D', viewValue: 'DEBITO'},
-    {value: 'E', viewValue: 'ESTORNO'},
+    {value: 'T', viewValue: 'TRANSFERENCIA'},
   ]
   displayedColumns: string[] = ['Empresa', 'Cnpj', 'Conta de Origem', 'Conta de Destino', 'Tipo de Transação', 'Valor'];
   exibirTabela:boolean = false;
 
-  dataSource = new MatTableDataSource<Transacoesdto>()
+  dataSource = new MatTableDataSource<TransacoesModel>()
   @ViewChild(MatPaginator) paginator!: MatPaginator ;
 
   constructor(
     private pesquisa: PesquisaService,
     private filtroBuilder: PesquisaFiltroBuilder,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder,
+    private spinner: NgxSpinnerService) {
   }
 
   ngOnInit() {
@@ -49,8 +52,8 @@ export class PesquisaComponent implements OnInit{
   }
 
   pesquisarTransacaoes() {
-
-
+  debugger
+    this.spinner.show();
     const filter = this.filtroBuilder
       .setName(this.formControlPesquisa.get("companyName")?.value)
       .setAccountDestination(this.formControlPesquisa.get("accountDestination")?.value)
@@ -61,16 +64,18 @@ export class PesquisaComponent implements OnInit{
     this.transacoes$ = this.pesquisa.getTransacoes(0, 10, filter)
     this.transacoes$.subscribe({
       next: (data: any) => {
+        debugger
         this.dataSource = data;
         this.exibirTabela = true;
         //SE NAO CONECTAR, CHAMA UM MOCK PARA TESTES
       },error: (err: any) => {
             this.erroMensagem = err;
             console.log("=======UTILIZANDO======= MOCK==============");
-            this.dataSource = new MatTableDataSource<Transacoesdto>(this.listaTetste());
+            this.dataSource = new MatTableDataSource<TransacoesModel>(this.listaTetste());
             this.exibirTabela = true;
 
-      }
+      }, complete: () => { this.spinner.hide(); },
+
     })
   }
 
@@ -86,8 +91,15 @@ export class PesquisaComponent implements OnInit{
 
   limpar(){
     debugger
-    this.dataSource = new MatTableDataSource<Transacoesdto>()
+    this.dataSource = new MatTableDataSource<TransacoesModel>()
     this.exibirTabela = false;
+  }
+
+  getType(type : string){
+    if(type == 'C'){ return TipoEnum.C}
+    if(type == 'D') {return TipoEnum.D}
+    if(type == 'T') {return TipoEnum.T}
+    return
   }
 
 //============================================= MOCK ====================================
@@ -105,7 +117,7 @@ debugger
   }
 }
 
-export class Transacoes implements Transacoesdto{
+export class Transacoes implements TransacoesModel{
   accountDestination: string;
   accountOrigin: string;
   company: Company;

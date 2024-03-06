@@ -12,14 +12,10 @@ hr {
   width: 80%;
 }
 
-.example-button-row button,
-.example-button-row a {
+.a {
   margin-right: 8px;
 }
 
-.example-disabled {
-  display: inline-block;
-}
 
 .content-center-div{
   display: flex;

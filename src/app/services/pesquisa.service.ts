@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Environment} from "../../environment/environment";
-import {Transacoesdto} from "../models/transacoesdto";
+import {TransacoesModel} from "../models/transacoes.model";
 import {isEmpty, Observable} from "rxjs";
-import {PesquisaFiltro} from "../models/pesquisaFiltro";
+import {PesquisaFiltroModel} from "../models/pesquisaFiltroModel";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class PesquisaService {
     this.httpClient = httpClient
   }
 
-  getTransacoes(pageNumber: number, pageSize: number, filtro: PesquisaFiltro): Observable<Transacoesdto[]> {
+  getTransacoes(pageNumber: number, pageSize: number, filtro: PesquisaFiltroModel): Observable<TransacoesModel[]> {
 
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json; charset=utf-8');
@@ -35,9 +35,9 @@ export class PesquisaService {
         headers = headers.set('companyName', filtro.companyName);
       }
       if (filtro.type !== 'undefined' && filtro.type != null )  {
-        headers = headers.set('companyName', filtro.type);
+        headers = headers.set('type', filtro.type);
       }
 
-    return this.httpClient.get<Transacoesdto[]>(this.urlBase + "/transactions/find?pageNumber=" + pageNumber + "&pageSize=" + pageSize, {headers})
+    return this.httpClient.get<TransacoesModel[]>(this.urlBase + "/transactions/find?pageNumber=" + pageNumber + "&pageSize=" + pageSize, {headers})
   }
 }

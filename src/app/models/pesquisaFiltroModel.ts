@@ -1,4 +1,4 @@
-export class PesquisaFiltro{
+export class PesquisaFiltroModel {
 
   companyName: string;
   companyId: string;
@@ -46,8 +46,8 @@ export class PesquisaFiltroBuilder {
     return this;
   }
 
-  build(): PesquisaFiltro {
-    return new PesquisaFiltro(this);
+  build(): PesquisaFiltroModel {
+    return new PesquisaFiltroModel(this);
   }
 
 }

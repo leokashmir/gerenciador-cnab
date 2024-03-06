@@ -9,35 +9,36 @@
     <mat-grid-tile>
       <mat-form-field class="full-width"  >
         <mat-label>Empresa</mat-label>
-        <input matInput placeholder="Empresa A" value="Sushi" formControlName ="companyName"   >
+        <input matInput placeholder="Empresa A" value="" formControlName ="companyName"   >
       </mat-form-field>
     </mat-grid-tile>
 
     <mat-grid-tile>
       <mat-form-field class="full-width">
         <mat-label>Cnpj</mat-label>
-        <input matInput placeholder="98215352000100" value="Sushi"formControlName="companyId">
+        <input matInput placeholder="98215352000100" value="" formControlName="companyId">
       </mat-form-field>
     </mat-grid-tile>
 
     <mat-grid-tile>
       <mat-form-field class="full-width">
         <mat-label>Conta Origem</mat-label>
-        <input matInput placeholder="321518" value="Sushi"  formControlName="accountOrigin">
+        <input matInput placeholder="321518" value=""  formControlName="accountOrigin">
       </mat-form-field>
    </mat-grid-tile>
 
     <mat-grid-tile>
       <mat-form-field class="full-width">
         <mat-label>Conta Destino</mat-label>
-        <input matInput placeholder="321567" value="Sushi" formControlName="accountDestination">
+        <input matInput placeholder="321567" value="" formControlName="accountDestination">
       </mat-form-field>
    </mat-grid-tile>
 
     <mat-grid-tile>
       <mat-form-field class="full-width" >
         <mat-label>Operção</mat-label>
-        <mat-select formControlName="type" name="food">
+        <mat-select formControlName="type" name="">
+          <mat-option [value]="">-</mat-option>
           @for (type of types; track types) {
             <mat-option [value]="type.value">{{type.viewValue}}</mat-option>
           }
@@ -89,7 +90,7 @@
 
     <ng-container matColumnDef="Tipo de Transação">
       <th mat-header-cell *matHeaderCellDef> Tipo de Transação </th>
-      <td mat-cell *matCellDef="let element"> {{element?.type}} </td>
+      <td mat-cell *matCellDef="let element"> {{getType(element?.type)}} </td>
     </ng-container>
 
     <ng-container matColumnDef="Valor">
@@ -108,4 +109,5 @@
 
 </div>
 }
-
+<!--<ngx-spinner type="ball-scale-multiple"></ngx-spinner>-->
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>

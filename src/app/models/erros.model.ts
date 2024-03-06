@@ -1,4 +1,4 @@
-export interface Erros{
+export interface ErrosModel {
   line: string;
   error: string;
 }
