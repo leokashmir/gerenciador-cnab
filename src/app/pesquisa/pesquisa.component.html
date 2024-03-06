@@ -4,40 +4,59 @@
   <h1>Consultar Transações</h1>
 </div><hr><br>
 
+  @if(message){   <div  class="message-alert">   {{ message }}   </div> }
+  @if (erroMensagem){  <div class="message-erro">    {{ erroMensagem }}   </div> }
+
+
   <mat-grid-list cols="3" rowHeight="70px">
 
     <mat-grid-tile>
       <mat-form-field class="full-width"  >
         <mat-label>Empresa</mat-label>
-        <input matInput placeholder="Empresa A" value="" formControlName ="companyName"   >
+        <input matInput placeholder="Empresa A"  formControlName ="companyName"   >
+        @if(formControlPesquisa.get('companyName')?.errors?.hasOwnProperty('maxLength')){
+          <mat-error>Tamanho maximo do campo excedido. (30 Caracteres)  </mat-error>
+        }
       </mat-form-field>
     </mat-grid-tile>
 
     <mat-grid-tile>
       <mat-form-field class="full-width">
         <mat-label>Cnpj</mat-label>
-        <input matInput placeholder="98215352000100" value="" formControlName="companyId">
-      </mat-form-field>
+        <input matInput placeholder="98215352000100"  formControlName="companyId" >
+        @if(formControlPesquisa.get('companyId')?.errors?.hasOwnProperty('pattern')){
+          <mat-error>Tamanho do campo é de 14 Caractres numericos </mat-error>
+        }
+      </mat-form-field><br>
+
+
+
     </mat-grid-tile>
 
     <mat-grid-tile>
       <mat-form-field class="full-width">
         <mat-label>Conta Origem</mat-label>
-        <input matInput placeholder="321518" value=""  formControlName="accountOrigin">
+        <input matInput placeholder="321518"  formControlName="accountOrigin">
+        @if(formControlPesquisa.get('accountOrigin')?.errors?.hasOwnProperty('pattern')){
+          <mat-error>Campo com valor ou tamanho incorreto. </mat-error>
+        }
       </mat-form-field>
    </mat-grid-tile>
 
     <mat-grid-tile>
       <mat-form-field class="full-width">
         <mat-label>Conta Destino</mat-label>
-        <input matInput placeholder="321567" value="" formControlName="accountDestination">
+        <input matInput placeholder="321567"  formControlName="accountDestination">
+        @if(formControlPesquisa.get('accountDestination')?.errors?.hasOwnProperty('pattern')){
+          <mat-error>Campo com valor ou tamanho incorreto. </mat-error>
+        }
       </mat-form-field>
    </mat-grid-tile>
 
     <mat-grid-tile>
       <mat-form-field class="full-width" >
         <mat-label>Operção</mat-label>
-        <mat-select formControlName="type" name="">
+        <mat-select formControlName="type" >
           <mat-option>--Selecione--</mat-option>
           @for (type of types; track types) {
             <mat-option [value]="type.value">{{type.viewValue}}</mat-option>

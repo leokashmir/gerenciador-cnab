@@ -22,18 +22,6 @@
 }
 
 
-.message-erro {
-  background-color: #ff0000;
-  font-weight: bold;
-  padding: 15px;
-  color: #000000;
-  border: #aaa solid 1px;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  opacity: 0.8;
-
-}
-
 .message-ok {
   background-color: #008000;
   font-weight: bold;

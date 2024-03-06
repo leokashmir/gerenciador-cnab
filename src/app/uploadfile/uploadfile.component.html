@@ -2,12 +2,11 @@
   <h1>Upload de arquivos</h1>
 </div>
 <hr><br>
-<div *ngIf="message" class="message-ok">
-  {{ message }}
-</div>
-<div *ngIf="messageErro" class="message-erro">
-  {{ messageErro }}
-</div>
+
+@if (message)    {  <div class="message">  {{ message }}  </div>  }
+@if (messageErro){  <div class="message-erro">    {{ messageErro }}   </div> }
+
+
 
 
 <div>

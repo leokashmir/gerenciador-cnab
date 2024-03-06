@@ -3,7 +3,7 @@ import {PesquisaService} from "../services/pesquisa.service";
 import {TransacoesModel} from "../models/transacoes.model";
 import {PesquisaFiltroBuilder} from "../models/pesquisaFiltroModel";
 import {Observable} from "rxjs";
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {type} from "node:os";
@@ -22,6 +22,7 @@ export class PesquisaComponent implements OnInit{
   companyId!:string;
   accountOrigin!:string;
   accountDestination!:string
+  message!: string
   type!:string;
   formControlPesquisa!: FormGroup;
   erroMensagem!:string;
@@ -52,7 +53,7 @@ export class PesquisaComponent implements OnInit{
   }
 
   pesquisarTransacaoes() {
-  debugger
+
     this.spinner.show();
     const filter = this.filtroBuilder
       .setName(this.formControlPesquisa.get("companyName")?.value)
@@ -64,15 +65,21 @@ export class PesquisaComponent implements OnInit{
     this.transacoes$ = this.pesquisa.getTransacoes(0, 10, filter)
     this.transacoes$.subscribe({
       next: (data: any) => {
-        debugger
-        this.dataSource = data;
-        this.exibirTabela = true;
-        //SE NAO CONECTAR, CHAMA UM MOCK PARA TESTES
+        if(data.length == 0){
+          this.message = "Não há registros para a busca executada."
+          this.dataSource = new MatTableDataSource<TransacoesModel>()  ;
+        }else{
+          this.dataSource = data;
+          this.exibirTabela = true;
+        }
+
+
+
       },error: (err: any) => {
             this.erroMensagem = err;
-            console.log("=======UTILIZANDO======= MOCK==============");
-            this.dataSource = new MatTableDataSource<TransacoesModel>(this.listaTetste());
-            this.exibirTabela = true;
+            //Habiitar para relizar um teste quando nao houver conexão com o back-end
+            // this.dataSource = new MatTableDataSource<TransacoesModel>(this.listaMock());
+            // this.exibirTabela = true;
 
       }, complete: () => { this.spinner.hide(); },
 
@@ -81,10 +88,10 @@ export class PesquisaComponent implements OnInit{
 
   createForm() {
     this.formControlPesquisa = this.formBuilder.group({
-      companyName: new FormControl (this.companyName),
-      companyId: new FormControl (this.companyId),
-      accountOrigin: new FormControl (this.accountOrigin),
-      accountDestination: new FormControl (this.accountDestination),
+      companyName: new FormControl (this.companyName, Validators.maxLength(30)),
+      companyId: new FormControl (this.companyId, [ Validators.pattern("^\\d{14}$")]),
+      accountOrigin: new FormControl (this.accountOrigin, [ Validators.pattern("^(?!0+$)\\d{1,16}$")]),
+      accountDestination: new FormControl (this.accountDestination, [ Validators.pattern("^(?!0+$)\\d{1,16}$")]),
       type: new FormControl (this.type)
     })
   }
@@ -104,18 +111,15 @@ export class PesquisaComponent implements OnInit{
     return
   }
 
-//============================================= MOCK ====================================
+//============================================= MOCK ==================================================================
 
-  listaTetste(){
-debugger
+  listaMock(){
      var comp :Company  = new Company("Empresa B", "12354689000123" )
      var tran : Transacoes = new Transacoes("123","321",comp,"C",123.23 )
      var lista: Transacoes[] = [];
      lista.push(tran);
      lista.push(tran);
      return lista;
-
-
   }
 }
 
@@ -147,4 +151,4 @@ export class Company  {
     this.companyId = companyId;
   }
 }
-// ================================== Mock ====================================
+// ================================== Mock ============================================================================

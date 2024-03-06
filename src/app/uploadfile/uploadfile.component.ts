@@ -25,16 +25,20 @@ export class UploadfileComponent {
   progress = 0;
   protected readonly TipoEnum = TipoEnum;
   responseSucesso!: ResponseUpload;
+  responseError: ResponseErroUpload;
   displayedColumns: string[] = ['Conta de Origem', 'Conta de Destino', 'Tipo de Transação', 'Valor'];
   displayedColumnsErros: string[] = ['Linha', 'Error'];
   dataSource :TransacoesModel[] = [];
   dataSourceErros: ErrosModel[] = []
-  transacoes$ = new Observable<ResponseUpload>();
+  transacoes$:Observable<ResponseUpload>;
   flagExibir: boolean = true;
 
-  constructor(private uploadService: UploadService, private spinner: NgxSpinnerService) {
 
+  constructor(private uploadService: UploadService, private spinner: NgxSpinnerService) {
+    this.responseError = new ResponseErroUpload();
+    this.transacoes$ = new Observable<ResponseUpload>();
   }
+
 
 
   selectFile(event: any): void {
@@ -59,23 +63,28 @@ export class UploadfileComponent {
               this.responseSucesso = event;
               this.dataSource = event.data.transactionDtos;
               this.message = event.message;
-              console.log(event.status)
+              this.currentFile = undefined;
+              this.spinner.hide();
 
         },
         error: (err: any) => {
-          this.flagExibir = false;
           if(err.status == 400){
-            this.messageErro = err.error.message;
-            this.dataSourceErros = err.error.erros;
+            this.responseError = err.error;
+            this.messageErro = this.responseError.message;
+
+            if(this.responseError.erros != undefined){
+              this.dataSourceErros = this.responseError.erros
+              this.flagExibir = false;
+            }
+
+
 
           }else{
             this.messageErro = err.message;
           }
-        },
-        complete: () => {
           this.currentFile = undefined;
           this.spinner.hide();
-        },
+        }
       });
 
 

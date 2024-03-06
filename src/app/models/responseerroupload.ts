@@ -1,8 +1,9 @@
-export interface ResponseErroUpload{
-  "status": string,
-  "message":string
+export class ResponseErroUpload{
+  status!: string
+  message!: string
+  erros: Erros[] = []
 }
-export interface Erros{
-  line: string;
-  error: string;
+export class Erros{
+  line!: string;
+  error!: string;
 }
