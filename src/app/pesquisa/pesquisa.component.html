@@ -38,7 +38,7 @@
       <mat-form-field class="full-width" >
         <mat-label>Operção</mat-label>
         <mat-select formControlName="type" name="">
-          <mat-option [value]="">-</mat-option>
+          <mat-option>--Selecione--</mat-option>
           @for (type of types; track types) {
             <mat-option [value]="type.value">{{type.viewValue}}</mat-option>
           }

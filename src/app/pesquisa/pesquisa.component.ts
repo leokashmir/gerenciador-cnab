@@ -90,9 +90,11 @@ export class PesquisaComponent implements OnInit{
   }
 
   limpar(){
-    debugger
+  debugger
     this.dataSource = new MatTableDataSource<TransacoesModel>()
     this.exibirTabela = false;
+    this.formControlPesquisa.reset()
+
   }
 
   getType(type : string){
