@@ -6,7 +6,6 @@ import {Observable} from "rxjs";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
-import {type} from "node:os";
 import {TipoEnum} from "../enums/TiposEnum";
 import {NgxSpinnerService} from "ngx-spinner";
 import {PaginationModel} from "../models/pagination.model";
@@ -28,10 +27,7 @@ export class PesquisaComponent implements OnInit{
   formControlPesquisa!: FormGroup;
   erroMensagem!:string;
   paginationModel!: PaginationModel
-  pageSize = 10;
-  currentPage = 0;
-  totalSize = 0;
-  array: any
+
 
   types =[
     {value: 'C', viewValue: 'CREDITO'},
@@ -39,7 +35,7 @@ export class PesquisaComponent implements OnInit{
     {value: 'T', viewValue: 'TRANSFERENCIA'},
   ]
   displayedColumns: string[] = ['Empresa', 'Cnpj', 'Conta de Origem', 'Conta de Destino', 'Tipo de Transação', 'Valor'];
-  exibirTabela:boolean = true;
+
 
   dataSource = new MatTableDataSource<TransacoesModel>()
   @ViewChild(MatPaginator) paginator!: MatPaginator ;
@@ -74,14 +70,13 @@ export class PesquisaComponent implements OnInit{
           this.message = "Não há registros para a busca executada."
           this.dataSource = new MatTableDataSource<TransacoesModel>()  ;
         }else{
-          debugger
+
           this.dataSource = data.content;
           this.paginationModel = data;
           this.paginator.pageSize = this.paginationModel.pageable.pageSize
           this.paginator.length = this.paginationModel.totalElements
           this.dataSource.paginator = this.paginator;
 
-          this.exibirTabela = true;
         }
 
 
@@ -90,25 +85,12 @@ export class PesquisaComponent implements OnInit{
             this.erroMensagem = err;
             //Habiitar para relizar um teste quando nao houver conexão com o back-end
             // this.dataSource = new MatTableDataSource<TransacoesModel>(this.listaMock());
-            // this.exibirTabela = true;
+
 
       }, complete: () => { this.spinner.hide(); },
 
     })
   }
-
-  // public handlePage(e: any) {
-  //   this.currentPage = e.pageIndex;
-  //   this.pageSize = e.pageSize;
-  //   this.iterator();
-  // }
-  //
-  // private iterator() {
-  //   const end = (this.currentPage + 1) * this.pageSize;
-  //   const start = this.currentPage * this.pageSize;
-  //   const part = this.array.slice(start, end);
-  //   this.dataSource = part;
-  // }
 
   createForm() {
     this.formControlPesquisa = this.formBuilder.group({
@@ -123,8 +105,9 @@ export class PesquisaComponent implements OnInit{
   limpar(){
   debugger
     this.dataSource = new MatTableDataSource<TransacoesModel>()
-    this.exibirTabela = false;
     this.formControlPesquisa.reset()
+    this.paginator.pageSize = 0;
+    this.paginator.length = 0;
 
   }
 
@@ -173,6 +156,7 @@ export class Company  {
   constructor(companyName: string, companyId: string) {
     this.companyName = companyName;
     this.companyId = companyId;
+
   }
 }
 // ================================== Mock ============================================================================

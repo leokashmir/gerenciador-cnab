@@ -19,18 +19,16 @@ export class UploadfileComponent {
 
 
   currentFile?: File;
-  fileName = 'Select File';
-  message!:string;
+  fileName = 'Selecione o Arquivo';
+  message!: string;
   messageErro!: string;
-  progress = 0;
-  protected readonly TipoEnum = TipoEnum;
   responseSucesso!: ResponseUpload;
   responseError: ResponseErroUpload;
   displayedColumns: string[] = ['Conta de Origem', 'Conta de Destino', 'Tipo de Transação', 'Valor'];
   displayedColumnsErros: string[] = ['Linha', 'Error'];
-  dataSource :TransacoesModel[] = [];
+  dataSource: TransacoesModel[] = [];
   dataSourceErros: ErrosModel[] = []
-  transacoes$:Observable<ResponseUpload>;
+  transacoes$: Observable<ResponseUpload>;
   flagExibir: boolean = true;
 
 
@@ -40,13 +38,12 @@ export class UploadfileComponent {
   }
 
 
-
   selectFile(event: any): void {
 
     this.currentFile = event.target.files.item(0);
-    this.fileName =   (event.target.files.item(0).name)
-      ?  event.target.files.item(0).name
-      : this.fileName ;
+    this.fileName = (event.target.files.item(0).name)
+      ? event.target.files.item(0).name
+      : this.fileName;
   }
 
   upload(): void {
@@ -60,26 +57,23 @@ export class UploadfileComponent {
       this.transacoes$.subscribe({
         next: (event: ResponseUpload) => {
           this.flagExibir = true;
-              this.responseSucesso = event;
-              this.dataSource = event.data.transactionDtos;
-              this.message = event.message;
-              this.currentFile = undefined;
-              this.spinner.hide();
+          this.responseSucesso = event;
+          this.dataSource = event.data.transactionDtos;
+          this.message = event.message;
+          this.currentFile = undefined;
+          this.spinner.hide();
 
         },
         error: (err: any) => {
-          if(err.status == 400){
+          if (err.status == 400) {
             this.responseError = err.error;
             this.messageErro = this.responseError.message;
 
-            if(this.responseError.erros != undefined){
+            if (this.responseError.erros != undefined) {
               this.dataSourceErros = this.responseError.erros
               this.flagExibir = false;
             }
-
-
-
-          }else{
+          } else {
             this.messageErro = err.message;
           }
           this.currentFile = undefined;
@@ -94,10 +88,17 @@ export class UploadfileComponent {
       }, 6000);
     }
   }
-  getType(type : string){
-    if(type == 'C'){ return TipoEnum.C}
-    if(type == 'D') {return TipoEnum.D}
-    if(type == 'T') {return TipoEnum.T}
+
+  getType(type: string) {
+    if (type == 'C') {
+      return TipoEnum.C
+    }
+    if (type == 'D') {
+      return TipoEnum.D
+    }
+    if (type == 'T') {
+      return TipoEnum.T
+    }
     return
   }
 }
