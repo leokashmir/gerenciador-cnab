@@ -51,7 +51,7 @@ export class UploadfileComponent {
     this.message = '';
     this.messageErro = '';
     let extensao = this.currentFile?.name.substr(this.currentFile?.name.lastIndexOf('.'));
-    if(extensao != "txt" ){
+    if(extensao != ".txt" ){
       this.messageErro = 'Uplaod aceita apenas arquivos .TXT';
 
     }else if(this.currentFile) {
