@@ -51,6 +51,7 @@ export class UploadfileComponent {
     this.message = '';
     this.messageErro = '';
 
+
     if (this.currentFile) {
       this.spinner.show();
       this.transacoes$ = this.uploadService.upload(this.currentFile);
@@ -65,6 +66,8 @@ export class UploadfileComponent {
 
         },
         error: (err: any) => {
+          this.dataSource = [];
+          
           if (err.status == 400) {
             this.responseError = err.error;
             this.messageErro = this.responseError.message;
@@ -72,8 +75,16 @@ export class UploadfileComponent {
             if (this.responseError.erros != undefined) {
               this.dataSourceErros = this.responseError.erros
               this.flagExibir = false;
+            }else{
+              this.dataSourceErros = []
+              this.flagExibir = true;
+              this.messageErro = this.responseError.message;
             }
+
+
           } else {
+            this.dataSourceErros = []
+            this.flagExibir = true;
             this.messageErro = err.message;
           }
           this.currentFile = undefined;

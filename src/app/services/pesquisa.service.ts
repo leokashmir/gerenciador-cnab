@@ -38,6 +38,6 @@ export class PesquisaService {
         headers = headers.set('type', filtro.type);
       }
 
-    return this.httpClient.get<TransacoesModel[]>(this.urlBase + "/transactions/find?pageNumber=" + pageNumber + "&pageSize=" + pageSize, {headers})
+    return this.httpClient.get<any>(this.urlBase + "/transactions/find?pageNumber=" + pageNumber + "&pageSize=" + pageSize, {headers})
   }
 }
