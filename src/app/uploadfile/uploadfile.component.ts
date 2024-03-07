@@ -50,9 +50,11 @@ export class UploadfileComponent {
 
     this.message = '';
     this.messageErro = '';
+    let extensao = this.currentFile?.name.substr(this.currentFile?.name.lastIndexOf('.'));
+    if(extensao != "txt" ){
+      this.messageErro = 'Uplaod aceita apenas arquivos .TXT';
 
-
-    if (this.currentFile) {
+    }else if(this.currentFile) {
       this.spinner.show();
       this.transacoes$ = this.uploadService.upload(this.currentFile);
       this.transacoes$.subscribe({
@@ -67,7 +69,7 @@ export class UploadfileComponent {
         },
         error: (err: any) => {
           this.dataSource = [];
-          
+
           if (err.status == 400) {
             this.responseError = err.error;
             this.messageErro = this.responseError.message;
