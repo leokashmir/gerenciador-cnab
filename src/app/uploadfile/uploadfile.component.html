@@ -1,0 +1,98 @@
+<div class="left-side">
+  <h1>Upload de arquivos</h1>
+</div>
+<hr><br>
+
+@if (message)    {  <div class="message">  {{ message }}  </div>  }
+@if (messageErro){  <div class="message-erro">    {{ messageErro }}   </div> }
+
+
+
+
+<div>
+
+  <mat-form-field class="full-width">
+    <div>
+      <mat-toolbar>
+        <input matInput [value]="fileName"/>
+
+        <button
+          mat-flat-button
+          color="primary"
+          [disabled]="!currentFile"
+          (click)="upload()"
+        >
+          Upload
+        </button>
+      </mat-toolbar>
+
+      <input
+        type="file"
+        id="fileInput"
+        accept=".txt"
+        (change)="selectFile($event)"
+        name="fileInput"
+        class="full-width-select-file"
+
+      />
+
+    </div>
+  </mat-form-field>
+</div>
+
+@if (flagExibir) {
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+
+      <ng-container matColumnDef="Conta de Origem">
+        <th mat-header-cell *matHeaderCellDef> Conta de Origem</th>
+        <td mat-cell *matCellDef="let element"> {{ element?.accountOrigin }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Conta de Destino">
+        <th mat-header-cell *matHeaderCellDef> Conta de Destino</th>
+        <td mat-cell *matCellDef="let element"> {{ element?.accountDestination }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Tipo de Transação">
+        <th mat-header-cell *matHeaderCellDef> Tipo de Transação</th>
+        <td mat-cell *matCellDef="let element"> {{ getType(element?.type) }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Valor">
+        <th mat-header-cell *matHeaderCellDef> Valor</th>
+        <td mat-cell *matCellDef="let element"> {{ element?.value  | currency:'BRL' }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+  </div>
+}
+
+@if (!flagExibir) {
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSourceErros">
+
+      <ng-container matColumnDef="Linha">
+        <th mat-header-cell *matHeaderCellDef> Linha</th>
+        <td mat-cell *matCellDef="let element"> {{ element?.line }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Error">
+        <th mat-header-cell *matHeaderCellDef> Error</th>
+        <td mat-cell *matCellDef="let element"> {{ element?.error }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsErros"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsErros;"></tr>
+
+    </table>
+
+  </div>
+}
+
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+
