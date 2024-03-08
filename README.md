@@ -334,7 +334,7 @@ A classe PesquisaService é um serviço Angular responsável por fazer requisiç
 
 
 ## Author
-<hr>
+
 
 [@leokashmir](https://www.github.com/leokashmir)
 
